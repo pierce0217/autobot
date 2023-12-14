@@ -80,27 +80,28 @@ def calculate_asset_percentage(balances):
 
 def wait_until_top_of_hour():
     current_time = datetime.now()
-    while current_time.minute != 0:
-        time.sleep(59)  # 3초씩 대기
+    if current_time.minute == 00 and current_time.second == 5:
+        time.sleep(3)  # 3초씩 대기
 
 while True:
     try:
         buy_crypto(crypto_list[0])
         buy_crypto(crypto_list[1])
         buy_crypto(crypto_list[2])
-
+        buy_crypto(crypto_list[3])
         
         sell_crypto(crypto_list[0])
         sell_crypto(crypto_list[1])
         sell_crypto(crypto_list[2])
-
+        sell_crypto(crypto_list[3])
         
         stoploss_crypto(crypto_list[0])
         stoploss_crypto(crypto_list[1])
         stoploss_crypto(crypto_list[2])
+        stoploss_crypto(crypto_list[3])
         
         current_time = datetime.now()
-        if last_checked_time is None or (current_time.minute == 0 and current_time != last_checked_time):
+        if last_checked_time is None or (current_time.minute == 00 and current_time.second == 5 and current_time != last_checked_time):
            balances = upbit.get_balances()
            percentages = calculate_asset_percentage(balances)
            telegramlog(f"Current balances: {percentages}")     
